@@ -1,8 +1,10 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createContext,
   Dispatch,
   ReactNode,
   useContext,
+  useEffect,
   useReducer,
 } from 'react';
 
@@ -43,12 +45,24 @@ interface AuthSignUpAction {
   payload: AuthSignUpPayload;
 }
 
-type AuthAction = AuthLoginAction | AuthLogoutAction | AuthSignUpAction;
+interface AuthRestoreAction {
+  type: 'restore';
+  payload: Auth | null;
+}
+
+type AuthAction =
+  | AuthLoginAction
+  | AuthLogoutAction
+  | AuthSignUpAction
+  | AuthRestoreAction;
 
 interface AuthContextType {
   auth: AuthDatabase;
   dispatch: Dispatch<AuthAction>;
 }
+
+// Note: Auth is stored in AsyncStorage for demo purpose only, in real scenario it should be stored inside somewhere safe like keychain.
+const storageKey = 'AAAA';
 
 const authReducer = (state: AuthDatabase, action: AuthAction): AuthDatabase => {
   switch (action.type) {
@@ -65,6 +79,11 @@ const authReducer = (state: AuthDatabase, action: AuthAction): AuthDatabase => {
           }
         }
       }
+
+      if (matched !== null) {
+        AsyncStorage.setItem(storageKey, JSON.stringify(matched));
+      }
+
       return {
         records: state.records,
         authInfo: matched ?? null,
@@ -72,6 +91,7 @@ const authReducer = (state: AuthDatabase, action: AuthAction): AuthDatabase => {
       };
     }
     case 'logout':
+      AsyncStorage.removeItem(storageKey);
       return {
         records: state.records,
         authInfo: null,
@@ -81,6 +101,12 @@ const authReducer = (state: AuthDatabase, action: AuthAction): AuthDatabase => {
       return {
         records: [...state.records, action.payload],
         authInfo: null,
+        error: null,
+      };
+    case 'restore':
+      return {
+        records: state.records,
+        authInfo: action.payload,
         error: null,
       };
   }
@@ -104,5 +130,24 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     authInfo: null,
     error: null,
   });
+
+  useEffect(() => {
+    const bootstrapAsync = async () => {
+      try {
+        const cached = await AsyncStorage.getItem(storageKey);
+        if (cached !== null) {
+          const parsed: Auth = JSON.parse(cached);
+          dispatch({ type: 'restore', payload: parsed });
+        } else {
+          dispatch({ type: 'restore', payload: null });
+        }
+      } catch {
+        dispatch({ type: 'restore', payload: null });
+      }
+    };
+
+    bootstrapAsync();
+  }, []);
+
   return <AuthContext value={{ auth, dispatch }}>{children}</AuthContext>;
 };
