@@ -171,49 +171,230 @@ A React Native application built with Expo that implements a complete authentica
 └── package.json
 ```
 
-## Getting Started
+## Setup Instructions
 
 ### Prerequisites
 
-- Node.js (LTS version recommended)
-- npm or pnpm
-- Expo CLI
-- iOS Simulator (for iOS) or Android Emulator (for Android)
+Before you begin, ensure you have the following installed on your system:
 
-### Installation
+#### Required Software
+
+1. **Node.js** (v18.x or later recommended)
+   - Download: [https://nodejs.org/](https://nodejs.org/)
+   - Verify installation: `node --version`
+
+2. **pnpm** (v8.x or later)
+   - Install: `npm install -g pnpm`
+   - Verify installation: `pnpm --version`
+   - Alternative: Use npm or yarn if preferred
+
+3. **Expo CLI**
+   - Install: `npm install -g expo-cli`
+   - Or use with npx: `npx expo`
+
+#### Platform-Specific Requirements
+
+**For iOS Development (macOS only):**
+
+- **Xcode** (latest version from Mac App Store)
+- **Xcode Command Line Tools**: Run `xcode-select --install`
+- **iOS Simulator** (included with Xcode)
+- **CocoaPods**: `sudo gem install cocoapods`
+
+**For Android Development:**
+
+- **Android Studio** (latest version)
+  - Download: [https://developer.android.com/studio](https://developer.android.com/studio)
+- **Android SDK** (installed via Android Studio)
+- **Android Emulator** (configured via Android Studio AVD Manager)
+- Set up environment variables:
+  ```bash
+  export ANDROID_HOME=$HOME/Library/Android/sdk
+  export PATH=$PATH:$ANDROID_HOME/emulator
+  export PATH=$PATH:$ANDROID_HOME/platform-tools
+  ```
+
+**For Physical Device Testing:**
+
+- **Expo Go app** installed on your device
+  - iOS: [App Store](https://apps.apple.com/app/expo-go/id982107779)
+  - Android: [Google Play](https://play.google.com/store/apps/details?id=host.exp.exponent)
+
+### Step-by-Step Installation
+
+#### 1. Clone the Repository
 
 ```bash
-# Install dependencies
+git clone <repository-url>
+cd user-authentication-takehome-assessment
+```
+
+#### 2. Install Dependencies
+
+```bash
 pnpm install
+```
 
-# Start the development server
+If you encounter any issues, try clearing the cache:
+
+```bash
+pnpm store prune
+pnpm install --force
+```
+
+#### 3. Verify Installation
+
+Check that all dependencies are installed correctly:
+
+```bash
+pnpm list
+```
+
+### Running the Application
+
+#### Start Development Server
+
+```bash
 pnpm start
+```
 
-# Run on iOS
+This will start the Expo development server and display a QR code in your terminal.
+
+#### Run on iOS Simulator
+
+```bash
 pnpm ios
+```
 
-# Run on Android
+This will:
+
+- Build the app
+- Launch the iOS Simulator
+- Install and run the app
+
+**Note:** macOS with Xcode required.
+
+#### Run on Android Emulator
+
+```bash
 pnpm android
+```
 
-# Run on Web
+Make sure you have:
+
+- Android Studio installed
+- An Android emulator created and running
+- Or a physical Android device connected via USB with USB debugging enabled
+
+#### Run on Physical Device
+
+1. Install **Expo Go** on your mobile device
+2. Run `pnpm start`
+3. Scan the QR code:
+   - **iOS**: Use Camera app
+   - **Android**: Use Expo Go app
+
+#### Run on Web
+
+```bash
 pnpm web
 ```
 
+This will open the app in your default web browser.
+
+### Troubleshooting
+
+#### Common Issues
+
+**Issue: "Command not found: expo"**
+
+```bash
+# Solution: Install Expo CLI globally
+npm install -g expo-cli
+```
+
+**Issue: "Unable to resolve module"**
+
+```bash
+# Solution: Clear cache and reinstall
+rm -rf node_modules
+pnpm install
+pnpm start --clear
+```
+
+**Issue: iOS build fails**
+
+```bash
+# Solution: Clean iOS build
+cd ios
+pod install
+cd ..
+pnpm ios
+```
+
+**Issue: Android build fails**
+
+```bash
+# Solution: Clean Android build
+cd android
+./gradlew clean
+cd ..
+pnpm android
+```
+
+**Issue: Metro bundler port conflict**
+
+```bash
+# Solution: Kill process on port 8081
+npx kill-port 8081
+pnpm start
+```
+
 ### Code Quality Scripts
+
+Run these commands to maintain code quality:
 
 ```bash
 # Run ESLint
 pnpm lint
 
-# Fix ESLint issues
+# Fix ESLint issues automatically
 pnpm lint:fix
 
 # Format code with Prettier
 pnpm format
 
-# Check formatting
+# Check if code is properly formatted
 pnpm format:check
 ```
+
+### Development Workflow
+
+1. **Start the development server**
+
+   ```bash
+   pnpm start
+   ```
+
+2. **Make your changes**
+   - Edit files in your code editor
+   - Changes will hot-reload automatically
+
+3. **Run linting and formatting**
+
+   ```bash
+   pnpm lint:fix
+   pnpm format
+   ```
+
+4. **Test on multiple platforms**
+   - Test on iOS simulator
+   - Test on Android emulator
+   - Test on physical devices if available
+
+### Environment Configuration
+
+This project uses Expo's default configuration. No additional environment variables are required for basic functionality.
 
 ## Implementation Highlights
 
