@@ -5,6 +5,7 @@ A React Native application built with Expo that implements a complete authentica
 ## 🎥 Demo Video
 
 ▶️ [Watch demo video](https://github.com/Vong3432/user-auth-takehome-assessment/blob/main/demo/ScreenRecording_01-09-2026%2022-39-17_1.MP4)
+- https://youtube.com/shorts/GkSSl8lV0kg?si=aOiGSEqmbn-SLqxe
 
 ## Features
 
