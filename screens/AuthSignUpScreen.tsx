@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '../ui/theme';
 import { Octicons } from '@expo/vector-icons';
 import { Button, ButtonVariant } from '../ui/components/Button';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 type FormData = z.infer<typeof authSignUpSchema>;
 
@@ -36,6 +37,7 @@ export default function AuthSignUpScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
+        keyboardShouldPersistTaps={'handled'}
         style={{
           backgroundColor: theme.colors.backgroundColor,
           padding: theme.spacing.md,
@@ -104,21 +106,24 @@ export default function AuthSignUpScreen() {
           />
         </View>
       </ScrollView>
-      <View
-        style={{
-          padding: theme.spacing.lg,
-          backgroundColor: theme.colors.backgroundColor,
-          borderTopColor: theme.colors.border,
-          borderTopWidth: 1,
-        }}
-      >
-        <Button
-          variant={ButtonVariant.filled}
-          color={theme.colors.primary}
-          title="Create account"
-          onPress={handleSubmit(onSubmit)}
-        />
-      </View>
+
+      <KeyboardAvoidingView behavior={'padding'}>
+        <View
+          style={{
+            padding: theme.spacing.lg,
+            backgroundColor: theme.colors.backgroundColor,
+            borderTopColor: theme.colors.border,
+            borderTopWidth: 1,
+          }}
+        >
+          <Button
+            variant={ButtonVariant.filled}
+            color={theme.colors.primary}
+            title="Create account"
+            onPress={handleSubmit(onSubmit)}
+          />
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

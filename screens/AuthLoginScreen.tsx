@@ -38,6 +38,7 @@ export default function AuthLoginScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
+        keyboardShouldPersistTaps={'handled'}
         keyboardDismissMode={'interactive'}
         style={{
           backgroundColor: theme.colors.backgroundColor,

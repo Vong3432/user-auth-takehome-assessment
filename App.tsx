@@ -9,14 +9,17 @@ import {
   useAuthContext,
 } from './libs/auth/useAuthContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <AuthContextProvider>
-      <RootPage />
-    </AuthContextProvider>
+    <KeyboardProvider>
+      <AuthContextProvider>
+        <RootPage />
+      </AuthContextProvider>
+    </KeyboardProvider>
   );
 }
 
