@@ -27,7 +27,7 @@ export default function AuthLoginScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
   const { auth, dispatch } = useAuthContext();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = (data: FormData) => {
     dispatch({ type: 'login', payload: data });
   };
 
