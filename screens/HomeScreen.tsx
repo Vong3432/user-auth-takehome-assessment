@@ -8,7 +8,7 @@ export default function HomeScreen() {
   const { auth, dispatch } = useAuthContext();
   const theme = useAppTheme();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch({ type: 'logout' });
   };
 

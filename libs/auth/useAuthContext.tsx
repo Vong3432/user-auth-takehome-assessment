@@ -80,10 +80,6 @@ const authReducer = (state: AuthDatabase, action: AuthAction): AuthDatabase => {
         }
       }
 
-      if (matched !== null) {
-        AsyncStorage.setItem(storageKey, JSON.stringify(matched));
-      }
-
       return {
         records: state.records,
         authInfo: matched ?? null,
@@ -91,7 +87,6 @@ const authReducer = (state: AuthDatabase, action: AuthAction): AuthDatabase => {
       };
     }
     case 'logout':
-      AsyncStorage.removeItem(storageKey);
       return {
         records: state.records,
         authInfo: null,
@@ -148,6 +143,17 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
     bootstrapAsync();
   }, []);
+
+  useEffect(() => {
+    const syncAuth = async () => {
+      if (auth.authInfo !== null) {
+        await AsyncStorage.setItem(storageKey, JSON.stringify(auth.authInfo));
+        return;
+      }
+      await AsyncStorage.removeItem(storageKey);
+    };
+    syncAuth();
+  }, [auth.authInfo]);
 
   return <AuthContext value={{ auth, dispatch }}>{children}</AuthContext>;
 };

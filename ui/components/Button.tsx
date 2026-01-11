@@ -1,12 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import { useMemo } from 'react';
-import {
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  ViewStyle,
-} from 'react-native';
+import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { useAppTheme } from '../theme';
 
 export enum ButtonVariant {
@@ -25,7 +18,7 @@ type ButtonProps = {
 
 export const Button = (props: ButtonProps) => {
   const theme = useAppTheme();
-  const styles = useMemo<ViewStyle & TextStyle>(() => {
+  const getButtonStyles = () => {
     switch (props.variant) {
       case ButtonVariant.filled:
         return {
@@ -48,13 +41,13 @@ export const Button = (props: ButtonProps) => {
           paddingBottom: theme.spacing.sm,
         };
     }
-  }, [props]);
+  };
 
   return (
     <TouchableOpacity activeOpacity={0.8} {...props} style={[props.style]}>
       <Text
         style={[
-          styles,
+          getButtonStyles(),
           {
             borderRadius: 12,
             textAlign: 'center',
